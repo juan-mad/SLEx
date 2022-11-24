@@ -5,7 +5,7 @@
 ## 5 distributions
 ## Cauchy, chi-square, exponential, F, Student-t
 
-set.seed(42)
+
 ### 1. Sets of 100 observations, histogram, kernel density, and compare with real density. Repeat with 1000, 10000, and conclusions
 
 
@@ -18,7 +18,7 @@ cauchy3 <- rcauchy(10000)
 ## The few instances that reach large values (in absolute value) do not let us appreciate the centre of the
 ## histogram, arguably the most interesting part. Let's restrict ourselves to that centre.
 
-hist(cauchy1, freq=F, nclass = 20, xlim=c(-50, 50), ylim=c(0,dcauchy(0)), main="Cauchy, n=100", xlab="")
+hist(cauchy1, freq=F, nclass = 150, xlim=c(-50, 50), ylim=c(0,dcauchy(0)), main="Cauchy, n=100", xlab="")
 z <- seq(-100, 100, 0.01)
 lines(z, dcauchy(z), col="red")
 kernel <- density(cauchy1, from=-40, to=40)
@@ -27,14 +27,14 @@ kernel_bad <- density(cauchy1)
 lines(kernel_bad, col="blue")
 legend("topright", c("True density", "Kernel density"), col=c("red", "blue"), lwd=2)
 
-hist(cauchy2, freq=F, nclass = 6000, xlim=c(-50, 50), ylim=c(0,dcauchy(0)), main="Cauchy, n=1,000", xlab="")
+hist(cauchy2, freq=F, nclass = 600, xlim=c(-50, 50), ylim=c(0,dcauchy(0)), main="Cauchy, n=1,000", xlab="")
 z <- seq(-100, 100, 0.01)
 lines(z, dcauchy(z), col="red")
 kernel <- density(cauchy2, from=-40, to=40)
-lines(kernel, col="purple")
+lines(kernel, col="red")
 kernel_bad <- density(cauchy2)
 lines(kernel_bad, col="blue")
-legend("topright", c("True density", "Kernel density", "Kernel density, corrected"), col=c("red", "blue", "purple"), lwd=2)
+legend("topright", c("True density", "Kernel density"), col=c("red", "blue"), lwd=2)
 
 hist(cauchy3, freq=F, nclass=6000, xlim=c(-50, 50), ylim=c(0,dcauchy(0)), main="Cauchy, n=10,000", xlab="")
 z <- seq(-100, 100, 0.01)
@@ -117,7 +117,7 @@ kernel_bad <- density(f1)
 lines(kernel_bad, col="blue")
 legend("topright", c("True density", "Kernel density"), col=c("red", "blue"), lwd=2)
 
-hist(f2, freq=F, nclass = 5000, main="F, n=1,000", xlab="", ylim=c(0, 0.6), xlim=c(0,50))
+hist(f2, freq=F, nclass = 2500, main="F, n=1,000", xlab="", ylim=c(0, 0.6), xlim=c(0,50))
 z <- seq(min(f2), max(f2), 0.01)
 lines(z, df(z, df1=5, df2=2), col="red")
 kernel_bad <- density(f2)
@@ -158,14 +158,14 @@ lines(kernel_bad, col="blue")
 #lines(kernel, col="purple")
 legend("topright", c("True density", "Kernel density"), col=c("red", "blue"), lwd=2)
 
-hist(t3, freq=F, nclass = 30, main="Student's t, n=10,000", xlab="", ylim=c(0, dt(0,df=5)))
+hist(t3, freq=F, nclass = 30, main="Student's t, n=10,000", xlab="")
 z <- seq(min(t3), max(t3), 0.01)
 lines(z, dt(z, df=5), col="red")
 kernel_bad <- density(t3)
 lines(kernel_bad, col="blue")
 #kernel <- density(t3, from=0, to=50)
 #lines(kernel, col="purple")
-legend("topright", c("True density", "Kernel density"), col=c("red", "blue"),lwd=2)
+legend("topright", c("True density", "Kernel density"), col=c("red", "blue"), lwd=2)
 
 ###########################
 
@@ -176,7 +176,6 @@ upper_cauchy <- quant_cauchy[3] + 1.5*IQR
 lower_cauchy <- quant_cauchy[1] - 1.5*IQR
 upper_cauchy
 lower_cauchy
-
 
 prob_out_cauchy <- pcauchy(lower_cauchy) + 1 - pcauchy(upper_cauchy)
 prob_out_cauchy
@@ -207,23 +206,17 @@ sample1up <- emp_quant1[3] + 1.5*IQR1
 sample1lo <- emp_quant1[1] - 1.5*IQR1
 sample1up
 sample1lo
-min(cauchy1)
-max(cauchy1)
 
 sample2up <- emp_quant2[3] + 1.5*IQR2
 sample2lo <- emp_quant2[1] - 1.5*IQR2
 sample2up
 sample2lo
-min(cauchy2)
-max(cauchy2)
-
 
 sample3up <- emp_quant3[3] + 1.5*IQR3
 sample3lo <- emp_quant3[1] - 1.5*IQR3
 sample3up
 sample3lo
-min(cauchy3)
-max(cauchy3)
+
 emp_out_1 <- sum(cauchy1 < sample1lo | cauchy1 > sample1up) / length(cauchy1)
 emp_out_2 <- sum(cauchy2 < sample2lo | cauchy2 > sample2up) / length(cauchy2)
 emp_out_3 <- sum(cauchy3 < sample3lo | cauchy3 > sample3up) / length(cauchy3)
@@ -256,20 +249,12 @@ IQR3 <- emp_quant3[3] - emp_quant3[1]
 
 sample1up <- emp_quant1[3] + 1.5*IQR1
 sample1lo <- emp_quant1[1] - 1.5*IQR1
-min(chisq1)
-max(chisq1)
-
 
 sample2up <- emp_quant2[3] + 1.5*IQR2
 sample2lo <- emp_quant2[1] - 1.5*IQR2
 
-min(chisq2)
-max(chisq2)
-
 sample3up <- emp_quant3[3] + 1.5*IQR3
 sample3lo <- emp_quant3[1] - 1.5*IQR3
-min(chisq3)
-max(chisq3)
 
 emp_out_1 <- sum(chisq1 < sample1lo | chisq1 > sample1up) / length(chisq1)
 emp_out_2 <- sum(chisq2 < sample2lo | chisq2 > sample2up) / length(chisq2)
@@ -304,21 +289,12 @@ IQR3 <- emp_quant3[3] - emp_quant3[1]
 
 sample1up <- emp_quant1[3] + 1.5*IQR1
 sample1lo <- emp_quant1[1] - 1.5*IQR1
-min(exp1)
-max(exp1)
-
 
 sample2up <- emp_quant2[3] + 1.5*IQR2
 sample2lo <- emp_quant2[1] - 1.5*IQR2
-min(exp2)
-max(exp2)
-
 
 sample3up <- emp_quant3[3] + 1.5*IQR3
 sample3lo <- emp_quant3[1] - 1.5*IQR3
-min(exp3)
-max(exp3)
-
 
 emp_out_1 <- sum(exp1 < sample1lo | exp1 > sample1up) / length(exp1)
 emp_out_2 <- sum(exp2 < sample2lo | exp2 > sample2up) / length(exp2)
@@ -355,19 +331,12 @@ IQR3 <- emp_quant3[3] - emp_quant3[1]
 
 sample1up <- emp_quant1[3] + 1.5*IQR1
 sample1lo <- emp_quant1[1] - 1.5*IQR1
-min(f1)
-max(f1)
 
 sample2up <- emp_quant2[3] + 1.5*IQR2
 sample2lo <- emp_quant2[1] - 1.5*IQR2
-min(f2)
-max(f2)
 
 sample3up <- emp_quant3[3] + 1.5*IQR3
 sample3lo <- emp_quant3[1] - 1.5*IQR3
-min(f3)
-max(f3)
-
 
 emp_out_1 <- sum(f1 < sample1lo | f1 > sample1up) / length(f1)
 emp_out_2 <- sum(f2 < sample2lo | f2 > sample2up) / length(f2)
@@ -408,21 +377,12 @@ IQR3 <- emp_quant3[3] - emp_quant3[1]
 
 sample1up <- emp_quant1[3] + 1.5*IQR1
 sample1lo <- emp_quant1[1] - 1.5*IQR1
-min(t1)
-max(t1)
-
 
 sample2up <- emp_quant2[3] + 1.5*IQR2
 sample2lo <- emp_quant2[1] - 1.5*IQR2
-min(t2)
-max(t2)
-
 
 sample3up <- emp_quant3[3] + 1.5*IQR3
 sample3lo <- emp_quant3[1] - 1.5*IQR3
-min(t3)
-max(t3)
-
 
 emp_out_1 <- sum(t1 < sample1lo | t1 > sample1up) / length(t1)
 emp_out_2 <- sum(t2 < sample2lo | t2 > sample2up) / length(t2)
