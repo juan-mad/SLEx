@@ -27,7 +27,7 @@ bivar <- function(pi, mu1, sigma1, mu2, sigma2) {
   return(out)
 }
 
-sample <- function(size, pi, mu1, sigma1, mu2, sigma2) {
+sampling <- function(size, pi, mu1, sigma1, mu2, sigma2) {
   pop1 <- sum(runif(size) < pi)
   pop1 <- ceiling(pop1)
   pop2 <- size - pop1
@@ -54,7 +54,7 @@ sigma2 <- matrix(data = c(1, .7, .7, 1), nrow=2, byrow=T)
 one <- bivar(pi, mu1, sigma1, mu2, sigma2)
 one
 
-z <- sample(1000, pi, mu1, sigma1, mu2, sigma2)
+z <- sampling(1000, pi, mu1, sigma1, mu2, sigma2)
 aa <- ggplot(data=z) + geom_point(aes(x=xx, y=yy, colour=factor(color))) + xlab("x") + ylab("y")
 aa <- aa + ggtitle("Mixture 1") + labs(colour="Distribution")
 aa
@@ -69,7 +69,7 @@ sigma2 <- matrix(data = c(1, -.7, -.7, 1), nrow=2, byrow=T)
 two <- bivar(pi, mu1, sigma1, mu2, sigma2)
 two
 
-z <- sample(1000, pi, mu1, sigma1, mu2, sigma2)
+z <- sampling(1000, pi, mu1, sigma1, mu2, sigma2)
 aa <- ggplot(data=z) + geom_point(aes(x=xx, y=yy, colour=factor(color))) + xlab("x") + ylab("y")
 aa <- aa + ggtitle("Mixture 2") + labs(colour="Distribution")
 aa
@@ -84,9 +84,9 @@ sigma2 <- matrix(data = c(1, .7, .7, 1), nrow=2, byrow=T)
 three <- bivar(pi, mu1, sigma1, mu2, sigma2)
 three
 
-z <- sample(1000, pi, mu1, sigma1, mu2, sigma2)
-aa <- ggplot(data=z) + geom_point(aes(x=xx, y=yy, colour=factor(color))) + xlab("x") + ylab("y")
-aa <- aa + ggtitle("Mixture 3") + labs(colour="Distribution")
+z <- sampling(1000, pi, mu1, sigma1, mu2, sigma2)
+aa <- ggplot(data=z) + geom_point(aes(x=xx, y=yy) )+ xlab("x") + ylab("y")
+aa <- aa + ggtitle("Mixture 3") 
 aa
 
 # 4.
@@ -99,7 +99,7 @@ sigma2 <- matrix(data = c(1, -.7, -.7, 1), nrow=2, byrow=T)
 four <- bivar(pi, mu1, sigma1, mu2, sigma2)
 four
 
-z <- sample(1000, pi, mu1, sigma1, mu2, sigma2)
+z <- sampling(1000, pi, mu1, sigma1, mu2, sigma2)
 aa <- ggplot(data=z) + geom_point(aes(x=xx, y=yy, colour=factor(color))) + xlab("x") + ylab("y")
 aa <- aa + ggtitle("Mixture 4") + labs(colour="Distribution")
 aa
@@ -108,19 +108,13 @@ aa
 #####################################
 #####################################
 
+x <- sample(c(-3, 3), 1000, replace=TRUE, prob=c(0.5,0.5))
+y <- -x
 
+eps <- rmvnorm(1000, mean=c(0,0), sigma=matrix(c(1,0.7,0.7,1), byrow=T, nrow = 2))
 
+m <- data.frame(xx = x, yy = y)
+mm <- m + eps
 
-
-
-
-
-
-
-
-
-
-
-
-
+ggplot(m, aes(x=mm$xx, y=mm$yy)) + geom_point()
 
